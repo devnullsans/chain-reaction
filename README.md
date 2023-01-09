@@ -10,7 +10,9 @@ Three.js + Vite + TypeScript starter
 - [x] explosion Speed too fast to understand
 - [x] pass parameters in url params for grid size number of players
 - [x] clip preview detection in three js such that the grid fits perfectly
-- [] in almost filled grid the explosions keeps happening even if player wins
+- [ ] in almost filled grid the explosions keeps happening even if player wins
+- [ ] if grid size is odd the raycaster fails to plot points.
+- [ ] the spread animation leads the actual placement of atoms.
 
 <div style="text-align: center;">
   <img src="./doc/screenshot.png"  width="400"/>
