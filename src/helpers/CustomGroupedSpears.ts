@@ -37,7 +37,6 @@ class CustomGroupedSpears extends Group {
       const v = new Vector3();
       const { x, y } = v
         .subVectors(this.neighbours[index].position, this.position)
-        .normalize()
         .divideScalar(20);
       this.children[index].position.x += x;
       this.children[index].position.y += y;
@@ -51,42 +50,46 @@ class CustomGroupedSpears extends Group {
         Math.random() * (Math.PI / 90)
       );
       this.add(new Mesh(CustomGroupedSpears.geometry, CustomGroupedSpears.materials[turn]));
+      switch (this.children.length) {
+        case 2:
+          {
+            const [one, two] = this.children as Array<Mesh>;
+            one.position.x -= 0.1;
+            two.position.x += 0.1;
+          }
+          break;
+        case 3:
+          {
+            const [one, two, three] = this.children as Array<Mesh>;
+            one.position.x -= 0.05;
+            one.position.y -= 0.1;
+            two.position.x += 0.05;
+            two.position.y -= 0.1;
+            three.position.y += 0.1;
+          }
+          break;
+        case 4:
+          {
+            const [_, __, three, four] = this.children as Array<Mesh>;
+            three.position.y += 0.05;
+            four.position.y -= 0.15;
+          }
+          break;
+      }
       if (this.children.length > this.limit) {
-        CustomGroupedSpears.reactions.push(...this.neighbours);
         this.turn = -1;
         this.vanish = true;
         this.rotation.set(0, 0, 0);
-        for (const child of this.children) {
-          child.position.set(0, 0, 0);
-        }
         setTimeout(() => {
-          this.vanish = false;
           while (this.children.length > 0) {
             this.remove(this.children[0]);
           }
+          this.vanish = false;
           resolve();
-        }, 3e2);
+        }, 2e2);
+        CustomGroupedSpears.reactions.push(...this.neighbours);
       } else {
-        switch (this.children.length) {
-          case 2:
-            {
-              const [one, two] = this.children as Array<Mesh>;
-              one.position.x -= 0.1;
-              two.position.x += 0.1;
-            }
-            break;
-          case 3:
-            {
-              const [one, two, three] = this.children as Array<Mesh>;
-              one.position.x -= 0.05;
-              one.position.y -= 0.1;
-              two.position.x += 0.05;
-              two.position.y -= 0.1;
-              three.position.y += 0.1;
-            }
-            break;
-        }
-        setTimeout(() => resolve(), 3e1);
+        resolve();
       }
     });
   }

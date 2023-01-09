@@ -83,9 +83,7 @@ const clickHandler = (e: MouseEvent) => {
 
   if (intersect) {
     const position = new Vector3();
-    position.copy(intersect.point);
-    position.floor();
-    position.addScalar(0.5);
+    position.copy(intersect.point).floor().addScalar(0.5);
     position.z = 0;
 
     const exist = objects.find((obj) => obj.position.equals(position));
