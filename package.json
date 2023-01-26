@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "echo production build command not initiated",
+    "test": "find public ! -name .gitignore -exec rm -r {} + && cd client && npm run build && mv ./build/* ../public/ && cd .. && node index.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^5.0.0-beta.1",
+    "google-auth-library": "^8.7.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongodb": "^4.13.0",
+    "ws": "^8.12.0"
+  },
+  "devDependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3"
+  }
+}
