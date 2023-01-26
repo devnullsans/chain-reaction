@@ -20,8 +20,6 @@ app.use([
 
 Connect()
   .then(() =>
-    app.listen(process.env.PORT ?? 8080, process.env.HOST ?? "localhost", () =>
-      console.log("Server Started")
-    )
+    app.listen(process.env.PORT ?? 8080, process.env.HOST ?? "localhost", () => console.log("Server Started"))
   )
   .catch(console.error);
