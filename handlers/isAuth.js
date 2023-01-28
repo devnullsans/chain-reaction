@@ -1,10 +1,12 @@
 import { db } from "../lib/mongo.js";
 import jwt from "jsonwebtoken";
 
-export async function checker(req, res, next) {
+export async function isAuth(req, res, next) {
   const Users = db.collection("users");
 
   const { auth } = req.cookies;
+
+  if (auth == null) return res.status(401).json({ error: "Unauthorized" });
 
   const { _id } = jwt.verify(auth, process.env.SECRET, {
     issuer: process.env.DOMAIN

@@ -1,8 +1,9 @@
 import cookieParser from "cookie-parser";
 import { Router, json } from "express";
 import { login } from "./handlers/login.js";
-import { checker } from "./handlers/checker.js";
+import { isAuth } from "./handlers/isAuth.js";
 import { stats } from "./handlers/stats.js";
+import { logout } from "./handlers/logout.js";
 
 const router = Router();
 
@@ -10,7 +11,9 @@ router.use([cookieParser(), json()]);
 
 router.post("/login", login);
 
-router.get("/stats", checker, stats);
+router.get("/logout", isAuth, logout);
+
+router.get("/stats", isAuth, stats);
 
 // create game route
 // find game route

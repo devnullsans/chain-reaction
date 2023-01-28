@@ -29,9 +29,9 @@ export async function login(req, res) {
     await Users.insertOne(user);
     // TODO send welcome email if needed
   } else {
-    user.name = name;
-    user.picture = picture;
-    if (!user.emails.includes(email)) user.emails.push(email);
+    // user.name = name;
+    // user.picture = picture;
+    // if (!user.emails.includes(email)) user.emails.push(email);
     await Users.updateOne(
       { _id: sub },
       { $set: { name, picture }, $addToSet: { emails: email } }
@@ -40,8 +40,8 @@ export async function login(req, res) {
     // TODO update banned according to ads & totals
   }
 
-  const { _id, emails } = user;
-  const token = jwt.sign({ _id, emails }, process.env.SECRET, {
+  // const { _id, emails } = user;
+  const token = jwt.sign({ _id: sub, name, email }, process.env.SECRET, {
     expiresIn: process.env.EXPIRE,
     issuer: process.env.DOMAIN
   });
@@ -49,7 +49,8 @@ export async function login(req, res) {
   res.cookie("auth", token, {
     secure: true,
     maxAge: 864e5,
-    httpOnly: true
+    httpOnly: true,
+    sameSite: true
   });
 
   res.status(200).json({ data: "Welcome" });

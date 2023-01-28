@@ -6,13 +6,13 @@ import Game from "./routes/Game";
 
 export default function App() {
   return (
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_ID}>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_ID!}>
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/dash" element={<Dash />} />
-          <Route exact path="/game" element={<Game />} />
-          <Route exact path="*" element={<Navigate replace to="/" />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/dash" element={<Dash />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>

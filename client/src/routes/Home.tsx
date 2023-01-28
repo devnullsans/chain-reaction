@@ -1,18 +1,31 @@
-import { GoogleLogin } from "@react-oauth/google";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
 
-  async function login(credential) {
+  async function login(credential: CredentialResponse) {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API}/login`, {
+      const res = await fetch(`${process.env.REACT_APP_API}/api/login`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify(credential)
       });
-      if (res.ok) navigate("/dash");
+      const ctype = res.headers.get("Content-Type");
+      if (typeof ctype === "string" && ctype.startsWith("application/json")) {
+        const { data, error } = await res.json();
+        if (res.ok) {
+          console.log(data);
+          navigate("/dash");
+        } else {
+          console.warn(res.status, res.statusText);
+          throw new Error(error);
+        }
+      } else {
+        console.warn(res.status, res.statusText, ctype);
+        throw new Error("Invalid content received");
+      }
     } catch (error) {
       console.error(error);
     }
