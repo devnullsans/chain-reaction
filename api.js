@@ -15,7 +15,8 @@ router.get("/logout", isAuth, logout);
 
 router.get("/stats", isAuth, stats);
 
-// create game route
+router.get("/create", isAuth);
+
 // find game route
 // join game route
 

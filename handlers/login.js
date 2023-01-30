@@ -16,8 +16,10 @@ export async function login(req, res) {
   let user = await Users.findOne({ _id: sub });
 
   if (user == null) {
+    // [..."L67KTFPDZTPTY"].reduce((r, v) => r * 36n + BigInt(parseInt(v, 36)), 0n)
     user = {
       _id: sub,
+      key: BigInt(sub).toString(36),
       emails: [email],
       name,
       picture,
@@ -40,8 +42,8 @@ export async function login(req, res) {
     // TODO update banned according to ads & totals
   }
 
-  // const { _id, emails } = user;
-  const token = jwt.sign({ _id: sub, name, email }, process.env.SECRET, {
+  const { _id, key, emails } = user;
+  const token = jwt.sign({ _id, key, emails }, process.env.SECRET, {
     expiresIn: process.env.EXPIRE,
     issuer: process.env.DOMAIN
   });
