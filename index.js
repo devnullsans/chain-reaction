@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import { resolve } from "node:path";
 import { Connect } from "./lib/mongo.js";
+import { handleUpgrade } from "./lib/socket.js";
 import api from "./api.js";
 
 config();
@@ -20,6 +21,10 @@ app.use([
 
 Connect()
   .then(() =>
-    app.listen(process.env.PORT ?? 8080, process.env.HOST ?? "localhost", () => console.log("Server Started"))
+    app
+      .listen(process.env.PORT ?? 8080, process.env.HOST ?? "localhost", () =>
+        console.log("Server Started")
+      )
+      .on("upgrade", handleUpgrade)
   )
   .catch(console.error);

@@ -1,4 +1,4 @@
-import { rooms, Game } from "../lib/games";
+import { Game, rooms } from "../lib/games.js";
 
 export async function create(req, res) {
   const { key } = req.user;

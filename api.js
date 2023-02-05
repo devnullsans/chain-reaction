@@ -4,6 +4,7 @@ import { login } from "./handlers/login.js";
 import { isAuth } from "./handlers/isAuth.js";
 import { stats } from "./handlers/stats.js";
 import { logout } from "./handlers/logout.js";
+import { create } from "./handlers/create.js";
 
 const router = Router();
 
@@ -15,10 +16,10 @@ router.get("/logout", isAuth, logout);
 
 router.get("/stats", isAuth, stats);
 
-router.get("/create", isAuth);
+router.get("/create", isAuth, create);
 
 // find game route
-// join game route
+// join game route is deligated to websockets
 
 router.use("*", (req, res) => {
   console.log("Route Not Found ❌", req.method, req.path);
