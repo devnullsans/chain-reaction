@@ -6,7 +6,11 @@ import Game from "./routes/Game";
 
 export default function App() {
   return (
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_ID!}>
+    <GoogleOAuthProvider
+      onScriptLoadError={() =>
+        console.log("Unable to log in with Google right now. Script Loading failed")
+      }
+      clientId={process.env.REACT_APP_GOOGLE_ID!}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />

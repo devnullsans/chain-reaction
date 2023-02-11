@@ -16,10 +16,13 @@ export default function Dash() {
   useEffect(() => {
     (async function () {
       try {
-        const res = await fetch(`${process.env.REACT_APP_API}/api/stats`, {
-          method: "GET",
-          credentials: "include"
-        });
+        const res = await fetch(
+          `${process.env.REACT_APP_API_PROTO}${process.env.REACT_APP_API_DOMAIN}/api/stats`,
+          {
+            method: "GET",
+            credentials: "include"
+          }
+        );
         const ctype = res.headers.get("Content-Type");
         if (typeof ctype === "string" && ctype.startsWith("application/json")) {
           const { data, error } = await res.json();

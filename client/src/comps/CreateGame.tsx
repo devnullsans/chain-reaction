@@ -1,19 +1,43 @@
-import { useState } from 'react';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateGame({ reset = () => undefined as void }) {
-  const [players, setPlayers] = useState('2');
+  const navigate = useNavigate();
+
+  const [players, setPlayers] = useState("2");
   const [visible, setVisible] = useState(false);
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        // fetch api to create a new game for this user
-        const ws = new WebSocket(`${process.env.REACT_APP_SOK}/api/join`);
-        ws.onopen = (e) => console.log('websocker oppened', e);
-        ws.onclose = (e) => console.log('websocker closed', e);
-        ws.onerror = (e) => console.log('websocker error', e);
-        ws.onmessage = (e) => console.log('websocker message', e);
+        try {
+          const res = await fetch(
+            `${process.env.REACT_APP_API_PROTO}${process.env.REACT_APP_API_DOMAIN}/api/create`,
+            {
+              method: "POST",
+              credentials: "include",
+              headers: { "Content-Type": "application/json; charset=utf-8" },
+              body: JSON.stringify({ players, visible })
+            }
+          );
+          const ctype = res.headers.get("Content-Type");
+          if (typeof ctype === "string" && ctype.startsWith("application/json")) {
+            const { data, error } = await res.json();
+            if (res.ok) {
+              console.log(data);
+              navigate("/game", { state: data });
+            } else {
+              console.warn(res.status, res.statusText);
+              throw new Error(error);
+            }
+          } else {
+            console.warn(res.status, res.statusText, ctype);
+            throw new Error("Invalid content received");
+          }
+        } catch (error) {
+          console.error(error);
+        }
       }}>
       <select value={players} onChange={(e) => setPlayers(e.target.value)} required>
         <option value="2">2 Player</option>

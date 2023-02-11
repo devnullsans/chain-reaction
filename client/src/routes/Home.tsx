@@ -6,12 +6,15 @@ export default function Home() {
 
   async function login(credential: CredentialResponse) {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API}/api/login`, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify(credential)
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_API_PROTO}${process.env.REACT_APP_API_DOMAIN}/api/login`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json; charset=utf-8" },
+          body: JSON.stringify(credential)
+        }
+      );
       const ctype = res.headers.get("Content-Type");
       if (typeof ctype === "string" && ctype.startsWith("application/json")) {
         const { data, error } = await res.json();
