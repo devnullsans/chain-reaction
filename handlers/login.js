@@ -15,7 +15,7 @@ export async function login(req, res) {
 
   let user = await Users.findOne({ _id: sub });
 
-  if (user == null) {
+  if (user === null) {
     // [..."L67KTFPDZTPTY"].reduce((r, v) => r * 36n + BigInt(parseInt(v, 36)), 0n)
     user = {
       _id: sub,
@@ -39,7 +39,10 @@ export async function login(req, res) {
       { $set: { name, picture }, $addToSet: { emails: email } }
     );
     // TODO check for banned and restrict players
+    if (user.banned) return res.status(403).json({ error: "Forbidden ⛔️" });
     // TODO update banned according to ads & totals
+    // const isAdsBlocked = user.ads * 2 < user.totals.reduce((t, v) => t + v);
+    // if (isAdsBlocked) user.banned = true;
   }
 
   const { _id, key, emails } = user;

@@ -20,5 +20,5 @@ export default function Game() {
     };
   }, [navigate, state]);
 
-  return <div>Game</div>;
+  return <div>Game {state}</div>;
 }
